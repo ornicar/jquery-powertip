@@ -16,12 +16,7 @@ module.exports = function(grunt) {
 			zip: 'jquery.powertip-<%= pkg.version %>.zip'
 		},
 		banner: [
-			'/*!',
-			' <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>',
-			' <%= pkg.homepage %>',
-			' Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %> (<%= pkg.author.url %>).',
-			' Released under <%= _.pluck(pkg.licenses, "type").join(", ") %> license.',
-			' <%= _.pluck(pkg.licenses, "url").join("\\n ") %>',
+			'/*! hacked jquery-powertip',
 			'*/\n'
 		].join('\n'),
 		clean: {
@@ -33,12 +28,6 @@ module.exports = function(grunt) {
 				src: [ 'Gruntfile.js' ],
 				options: {
 					jshintrc: '.jshintrc'
-				}
-			},
-			tests: {
-				src: [ 'test/**/*.js' ],
-				options: {
-					jshintrc: 'test/.jshintrc'
 				}
 			},
 			dist: {
