@@ -8,16 +8,6 @@
  */
 
 /**
- * Determine whether a jQuery object is an SVG element
- * @private
- * @param {jQuery} element The element to check
- * @return {boolean} Whether this is an SVG element
- */
-function isSvgElement(element) {
-	return window.SVGElement && element[0] instanceof SVGElement;
-}
-
-/**
  * Initializes the viewport dimension cache and hooks up the mouse position
  * tracking and viewport dimension tracking events.
  * Prevents attaching the events more than once.
@@ -76,19 +66,11 @@ function trackMouse(event) {
  * @return {boolean}
  */
 function isMouseOver(element) {
-	// use getBoundingClientRect() because jQuery's width() and height()
-	// methods do not work with SVG elements
-	// compute width/height because those properties do not exist on the object
-	// returned by getBoundingClientRect() in older versions of IE
-	var elementPosition = element.offset(),
-		elementBox = element[0].getBoundingClientRect(),
-		elementWidth = elementBox.right - elementBox.left,
-		elementHeight = elementBox.bottom - elementBox.top;
-
+	var elementPosition = element.offset();
 	return session.currentX >= elementPosition.left &&
-		session.currentX <= elementPosition.left + elementWidth &&
+		session.currentX <= elementPosition.left + element.width() &&
 		session.currentY >= elementPosition.top &&
-		session.currentY <= elementPosition.top + elementHeight;
+		session.currentY <= elementPosition.top + element.height();
 }
 
 /**

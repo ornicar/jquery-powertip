@@ -27,13 +27,7 @@ function PlacementCalculator() {
 	function computePlacementCoords(element, placement, tipWidth, tipHeight, offset) {
 		var placementBase = placement.split('-')[0], // ignore 'alt' for corners
 			coords = new CSSCoordinates(),
-			position;
-
-		if (isSvgElement(element)) {
-			position = getSvgPlacement(element, placementBase);
-		} else {
 			position = getHtmlPlacement(element, placementBase);
-		}
 
 		// calculate the appropriate x and y position in the document
 		switch (placement) {
@@ -128,78 +122,6 @@ function PlacementCalculator() {
 		return {
 			top: top,
 			left: left
-		};
-	}
-
-	/**
-	 * Finds the tooltip attachment point in the document for a SVG element for
-	 * the specified placement.
-	 * @private
-	 * @param {jQuery} element The element that the tooltip should target.
-	 * @param {string} placement The placement for the tooltip.
-	 * @return {Object} An object with the top,left position values.
-	 */
-	function getSvgPlacement(element, placement) {
-		var svgElement = element.closest('svg')[0],
-			domElement = element[0],
-			point = svgElement.createSVGPoint(),
-			boundingBox = domElement.getBBox(),
-			matrix = domElement.getScreenCTM(),
-			halfWidth = boundingBox.width / 2,
-			halfHeight = boundingBox.height / 2,
-			placements = [],
-			placementKeys = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'],
-			coords,
-			rotation,
-			steps,
-			x;
-
-		function pushPlacement() {
-			placements.push(point.matrixTransform(matrix));
-		}
-
-		// get bounding box corners and midpoints
-		point.x = boundingBox.x;
-		point.y = boundingBox.y;
-		pushPlacement();
-		point.x += halfWidth;
-		pushPlacement();
-		point.x += halfWidth;
-		pushPlacement();
-		point.y += halfHeight;
-		pushPlacement();
-		point.y += halfHeight;
-		pushPlacement();
-		point.x -= halfWidth;
-		pushPlacement();
-		point.x -= halfWidth;
-		pushPlacement();
-		point.y -= halfHeight;
-		pushPlacement();
-
-		// determine rotation
-		if (placements[0].y !== placements[1].y || placements[0].x !== placements[7].x) {
-			rotation = Math.atan2(matrix.b, matrix.a) * RAD2DEG;
-			steps = Math.ceil(((rotation % 360) - 22.5) / 45);
-			if (steps < 1) {
-				steps += 8;
-			}
-			while (steps--) {
-				placementKeys.push(placementKeys.shift());
-			}
-		}
-
-		// find placement
-		for (x = 0; x < placements.length; x++) {
-			if (placementKeys[x] === placement) {
-				coords = placements[x];
-				break;
-			}
-		}
-
-		return {
-			top: coords.y + session.scrollTop,
-			left: coords.x + session.scrollLeft
 		};
 	}
 
