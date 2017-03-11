@@ -39,12 +39,12 @@ function initTracking() {
 		$document.on('mousemove', trackMouse);
 
 		// hook viewport dimensions tracking
-		$window.on({
-			resize: function trackResize() {
+    window.addEventListener('resize', function() {
 				session.windowWidth = $window.width();
 				session.windowHeight = $window.height();
-			},
-			scroll: function trackScroll() {
+			}, { passive: true });
+
+    window.addEventListener('scroll', function() {
 				var x = $window.scrollLeft(),
 					y = $window.scrollTop();
 				if (x !== session.scrollLeft) {
@@ -55,8 +55,7 @@ function initTracking() {
 					session.currentY += y - session.scrollTop;
 					session.scrollTop = y;
 				}
-			}
-		});
+			}, { passive: true });
 	}
 }
 
