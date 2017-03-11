@@ -20,8 +20,7 @@ var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_ORIGINALTITLE = 'originalTitle',
 	DATA_POWERTIP = 'powertip',
 	DATA_POWERTIPJQ = 'powertipjq',
-	DATA_POWERTIPTARGET = 'powertiptarget',
-	RAD2DEG = 180 / Math.PI;
+	DATA_POWERTIPTARGET = 'powertiptarget';
 
 /**
  * Session data

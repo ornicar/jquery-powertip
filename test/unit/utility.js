@@ -3,14 +3,6 @@ $(function() {
 
 	module('Utility Functions');
 
-	test('isSvgElement', function() {
-		var div = $('<div />'),
-			rect = $(document.createElementNS('http://www.w3.org/2000/svg', 'rect'));
-
-		strictEqual(isSvgElement(rect), true, 'rect is an SVG element');
-		strictEqual(isSvgElement(div), false, 'div is not an SVG element');
-	});
-
 	test('initTracking', function() {
 		session.currentX = 1;
 		session.currentY = 1;

@@ -49,11 +49,7 @@ $(function() {
 			'north-west',
 			'north-east',
 			'south-west',
-			'south-east',
-			'north-west-alt',
-			'north-east-alt',
-			'south-west-alt',
-			'south-east-alt'
+			'south-east'
 		],
 		function(i, val) {
 			$('.' + val).data('powertip', hugeText);
@@ -69,10 +65,6 @@ $(function() {
 	$('#huge-text .north-east').powerTip({placement: 'ne'});
 	$('#huge-text .south-west').powerTip({placement: 'sw'});
 	$('#huge-text .south-east').powerTip({placement: 'se'});
-	$('#huge-text .north-west-alt').powerTip({placement: 'nw-alt'});
-	$('#huge-text .north-east-alt').powerTip({placement: 'ne-alt'});
-	$('#huge-text .south-west-alt').powerTip({placement: 'sw-alt'});
-	$('#huge-text .south-east-alt').powerTip({placement: 'se-alt'});
 
 	// Huge text with smart placement
 	$('#huge-text-smart .north').powerTip({placement: 'n', smartPlacement: true});
@@ -83,9 +75,5 @@ $(function() {
 	$('#huge-text-smart .north-east').powerTip({placement: 'ne', smartPlacement: true});
 	$('#huge-text-smart .south-west').powerTip({placement: 'sw', smartPlacement: true});
 	$('#huge-text-smart .south-east').powerTip({placement: 'se', smartPlacement: true});
-	$('#huge-text-smart .north-west-alt').powerTip({placement: 'nw-alt', smartPlacement: true});
-	$('#huge-text-smart .north-east-alt').powerTip({placement: 'ne-alt', smartPlacement: true});
-	$('#huge-text-smart .south-west-alt').powerTip({placement: 'sw-alt', smartPlacement: true});
-	$('#huge-text-smart .south-east-alt').powerTip({placement: 'se-alt', smartPlacement: true});
 
 });
