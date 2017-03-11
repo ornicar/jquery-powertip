@@ -92,10 +92,9 @@ function TooltipController(options) {
 			if (!session.isClosing) {
 				hideTip(session.activeHover);
 			}
-			tipElement.delay(100).queue(function queueTipAgain(next) {
+      setTimeout(function() {
 				showTip(element);
-				next();
-			});
+			}, 100);
 			return;
 		}
 
@@ -124,15 +123,16 @@ function TooltipController(options) {
     session.isFixedTipOpen = true;
 
 		// fadein
-		tipElement.show();
+		tipElement.show(0, function() {
 
-    // start desync polling
-    if (!session.desyncTimeout) {
-      session.desyncTimeout = setInterval(closeDesyncedTip, 500);
-    }
+      // start desync polling
+      if (!session.desyncTimeout) {
+        session.desyncTimeout = setInterval(closeDesyncedTip, 500);
+      }
 
-    // trigger powerTipOpen event
-    element.trigger('powerTipOpen');
+      // trigger powerTipOpen event
+      element.trigger('powerTipOpen');
+    });
 	}
 
 	/**
@@ -154,22 +154,23 @@ function TooltipController(options) {
 		element.data(DATA_FORCEDOPEN, false);
 
 		// fade out
-		tipElement.hide();
-    var coords = new CSSCoordinates();
+		tipElement.hide(0, function() {
+      var coords = new CSSCoordinates();
 
-    // reset session and tooltip element
-    session.isClosing = false;
-    session.isFixedTipOpen = false;
-    tipElement.removeClass();
+      // reset session and tooltip element
+      session.isClosing = false;
+      session.isFixedTipOpen = false;
+      tipElement.removeClass();
 
-    // support mouse-follow and fixed position tips at the same time by
-    // moving the tooltip to the last cursor location after it is hidden
-    coords.set('top', session.currentY + options.offset);
-    coords.set('left', session.currentX + options.offset);
-    tipElement.css(coords);
+      // support mouse-follow and fixed position tips at the same time by
+      // moving the tooltip to the last cursor location after it is hidden
+      coords.set('top', session.currentY + options.offset);
+      coords.set('left', session.currentX + options.offset);
+      tipElement.css(coords);
 
-    // trigger powerTipClose event
-    element.trigger('powerTipClose');
+      // trigger powerTipClose event
+      element.trigger('powerTipClose');
+    });
 	}
 
 	/**

@@ -18,12 +18,10 @@ function initTracking() {
 		session.mouseTrackingActive = true;
 
 		// grab the current viewport dimensions on load
-		$(function getViewportDimensions() {
-			session.scrollLeft = $window.scrollLeft();
-			session.scrollTop = $window.scrollTop();
-			session.windowWidth = $window.width();
-			session.windowHeight = $window.height();
-		});
+    session.scrollLeft = $window.scrollLeft();
+    session.scrollTop = $window.scrollTop();
+    session.windowWidth = $window.width();
+    session.windowHeight = $window.height();
 
 		// hook mouse move tracking
 		$document.on('mousemove', trackMouse);
