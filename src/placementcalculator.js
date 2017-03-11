@@ -57,33 +57,17 @@ function PlacementCalculator() {
 			coords.set('bottom', session.windowHeight - position.top + offset);
 			coords.set('right', session.windowWidth - position.left - 20);
 			break;
-		case 'nw-alt':
-			coords.set('left', position.left);
-			coords.set('bottom', session.windowHeight - position.top + offset);
-			break;
 		case 'ne':
 			coords.set('left', position.left - 20);
 			coords.set('bottom', session.windowHeight - position.top + offset);
-			break;
-		case 'ne-alt':
-			coords.set('bottom', session.windowHeight - position.top + offset);
-			coords.set('right', session.windowWidth - position.left);
 			break;
 		case 'sw':
 			coords.set('top', position.top + offset);
 			coords.set('right', session.windowWidth - position.left - 20);
 			break;
-		case 'sw-alt':
-			coords.set('left', position.left);
-			coords.set('top', position.top + offset);
-			break;
 		case 'se':
 			coords.set('left', position.left - 20);
 			coords.set('top', position.top + offset);
-			break;
-		case 'se-alt':
-			coords.set('top', position.top + offset);
-			coords.set('right', session.windowWidth - position.left);
 			break;
 		}
 
