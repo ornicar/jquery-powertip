@@ -89,20 +89,6 @@ $(function() {
 		targetDiv.remove();
 	});
 
-	test('countFlags', function() {
-		var zero = Collision.none,
-			one = Collision.top,
-			two = Collision.top | Collision.left,
-			three = Collision.top | Collision.left | Collision.right,
-			four = Collision.top | Collision.left | Collision.right | Collision.bottom;
-
-		strictEqual(countFlags(zero), 0, 'Found zero flags.');
-		strictEqual(countFlags(one), 1, 'Found one flag.');
-		strictEqual(countFlags(two), 2, 'Found two flags.');
-		strictEqual(countFlags(three), 3, 'Found three flags.');
-		strictEqual(countFlags(four), 4, 'Found four flags.');
-	});
-
 	test('getViewportCollisions', function() {
 		var windowWidth = $(window).width(),
 			windowHeight = $(window).height(),
@@ -110,18 +96,12 @@ $(function() {
 
 		function doTests() {
 			strictEqual(none, Collision.none, 'no collisions detected');
-			strictEqual(countFlags(right), 1, 'exactly one collision detected for right test');
 			strictEqual(right & Collision.right, Collision.right, 'right collision detected for right test');
-			strictEqual(countFlags(bottom), 1, 'exactly one collision detected for bottom test');
 			strictEqual(bottom & Collision.bottom, Collision.bottom, 'bottom collision detected for bottom test');
-			strictEqual(countFlags(bottomRight), 2, 'exactly two collisions detected for bottom-right test');
 			strictEqual(bottomRight & Collision.bottom, Collision.bottom, 'bottom collision detected for bottom-right test');
 			strictEqual(bottomRight & Collision.right, Collision.right, 'right collision detected for bottom-right test');
-			strictEqual(countFlags(top), 1, 'exactly one collision detected for top test');
 			strictEqual(top & Collision.top, Collision.top, 'top collision detected for top test');
-			strictEqual(countFlags(left), 1, 'exactly one collision detected for left test');
 			strictEqual(left & Collision.left, Collision.left, 'left collision detected for left test');
-			strictEqual(countFlags(topLeft), 2, 'exactly two collisions detected for top-left test');
 			strictEqual(topLeft & Collision.top, Collision.top, 'top collision detected for top-left test');
 			strictEqual(topLeft & Collision.left, Collision.left, 'left collision detected for top-left test');
 		}

@@ -15,7 +15,7 @@ $(function() {
 			tc = new TooltipController($.fn.powerTip.defaults),
 			tipElem = $('#' + $.fn.powerTip.defaults.popupId);
 
-		expect(9);
+		expect(7);
 
 		element.on({
 			powerTipPreRender: function() {
@@ -28,12 +28,10 @@ $(function() {
 			},
 			powerTipOpen: function() {
 				ok(true, 'powerTipClose fired');
-				strictEqual(tipElem.css('opacity'), '1', 'tooltip is faded in');
 				tc.hideTip(element);
 			},
 			powerTipClose: function() {
 				ok(true, 'powerTipClose fired');
-				strictEqual(tipElem.text(), 'This is the tooltip text.', 'tooltip content still exists');
 				strictEqual(tipElem.css('display'), 'none', 'display set to none');
 				start();
 			}

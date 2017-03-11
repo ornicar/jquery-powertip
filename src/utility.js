@@ -158,17 +158,3 @@ function getViewportCollisions(coords, elementWidth, elementHeight) {
 
 	return collisions;
 }
-
-/**
- * Counts the number of bits set on a flags value.
- * @param {number} value The flags value.
- * @return {number} The number of bits that have been set.
- */
-function countFlags(value) {
-	var count = 0;
-	while (value) {
-		value &= value - 1;
-		count++;
-	}
-	return count;
-}

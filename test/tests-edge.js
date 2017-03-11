@@ -88,7 +88,4 @@ $(function() {
 	$('#huge-text-smart .south-west-alt').powerTip({placement: 'sw-alt', smartPlacement: true});
 	$('#huge-text-smart .south-east-alt').powerTip({placement: 'se-alt', smartPlacement: true});
 
-	// Trapped mouse following tooltip
-	$('#trapped-mousefollow').powerTip({ followMouse: true });
-
 });

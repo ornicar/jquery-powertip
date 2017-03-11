@@ -28,16 +28,6 @@ function TooltipController(options) {
 		$body.append(tipElement);
 	}
 
-	// hook mousemove for cursor follow tooltips
-	if (options.followMouse) {
-		// only one positionTipOnCursor hook per tooltip element, please
-		if (!tipElement.data(DATA_HASMOUSEMOVE)) {
-			$document.on('mousemove', positionTipOnCursor);
-			$window.on('scroll', positionTipOnCursor);
-			tipElement.data(DATA_HASMOUSEMOVE, true);
-		}
-	}
-
 	// if we want to be able to mouse onto the tooltip then we need to attach
 	// hover events to the tooltip that will cancel a close request on hover and
 	// start a new close request on mouseleave
@@ -130,23 +120,19 @@ function TooltipController(options) {
 		tipElement.data(DATA_MOUSEONTOTIP, options.mouseOnToPopup);
 
 		// set tooltip position
-		if (!options.followMouse) {
-			positionTipOnElement(element);
-			session.isFixedTipOpen = true;
-		} else {
-			positionTipOnCursor();
-		}
+    positionTipOnElement(element);
+    session.isFixedTipOpen = true;
 
 		// fadein
-		tipElement.fadeIn(options.fadeInTime, function fadeInCallback() {
-			// start desync polling
-			if (!session.desyncTimeout) {
-				session.desyncTimeout = setInterval(closeDesyncedTip, 500);
-			}
+		tipElement.show();
 
-			// trigger powerTipOpen event
-			element.trigger('powerTipOpen');
-		});
+    // start desync polling
+    if (!session.desyncTimeout) {
+      session.desyncTimeout = setInterval(closeDesyncedTip, 500);
+    }
+
+    // trigger powerTipOpen event
+    element.trigger('powerTipOpen');
 	}
 
 	/**
@@ -168,76 +154,22 @@ function TooltipController(options) {
 		element.data(DATA_FORCEDOPEN, false);
 
 		// fade out
-		tipElement.fadeOut(options.fadeOutTime, function fadeOutCallback() {
-			var coords = new CSSCoordinates();
+		tipElement.hide();
+    var coords = new CSSCoordinates();
 
-			// reset session and tooltip element
-			session.isClosing = false;
-			session.isFixedTipOpen = false;
-			tipElement.removeClass();
+    // reset session and tooltip element
+    session.isClosing = false;
+    session.isFixedTipOpen = false;
+    tipElement.removeClass();
 
-			// support mouse-follow and fixed position tips at the same time by
-			// moving the tooltip to the last cursor location after it is hidden
-			coords.set('top', session.currentY + options.offset);
-			coords.set('left', session.currentX + options.offset);
-			tipElement.css(coords);
+    // support mouse-follow and fixed position tips at the same time by
+    // moving the tooltip to the last cursor location after it is hidden
+    coords.set('top', session.currentY + options.offset);
+    coords.set('left', session.currentX + options.offset);
+    tipElement.css(coords);
 
-			// trigger powerTipClose event
-			element.trigger('powerTipClose');
-		});
-	}
-
-	/**
-	 * Moves the tooltip to the users mouse cursor.
-	 * @private
-	 */
-	function positionTipOnCursor() {
-		// to support having fixed tooltips on the same page as cursor tooltips,
-		// where both instances are referencing the same tooltip element, we
-		// need to keep track of the mouse position constantly, but we should
-		// only set the tip location if a fixed tip is not currently open, a tip
-		// open is imminent or active, and the tooltip element in question does
-		// have a mouse-follow using it.
-		if (!session.isFixedTipOpen && (session.isTipOpen || (session.tipOpenImminent && tipElement.data(DATA_HASMOUSEMOVE)))) {
-			// grab measurements
-			var tipWidth = tipElement.outerWidth(),
-				tipHeight = tipElement.outerHeight(),
-				coords = new CSSCoordinates(),
-				collisions,
-				collisionCount;
-
-			// grab collisions
-			coords.set('top', session.currentY + options.offset);
-			coords.set('left', session.currentX + options.offset);
-			collisions = getViewportCollisions(
-				coords,
-				tipWidth,
-				tipHeight
-			);
-
-			// handle tooltip view port collisions
-			if (collisions !== Collision.none) {
-				collisionCount = countFlags(collisions);
-				if (collisionCount === 1) {
-					// if there is only one collision (bottom or right) then
-					// simply constrain the tooltip to the view port
-					if (collisions === Collision.right) {
-						coords.set('left', session.windowWidth - tipWidth);
-					} else if (collisions === Collision.bottom) {
-						coords.set('top', session.scrollTop + session.windowHeight - tipHeight);
-					}
-				} else {
-					// if the tooltip has more than one collision then it is
-					// trapped in the corner and should be flipped to get it out
-					// of the users way
-					coords.set('left', session.currentX - tipWidth - options.offset);
-					coords.set('top', session.currentY - tipHeight - options.offset);
-				}
-			}
-
-			// position the tooltip
-			tipElement.css(coords);
-		}
+    // trigger powerTipClose event
+    element.trigger('powerTipClose');
 	}
 
 	/**

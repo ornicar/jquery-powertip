@@ -10,9 +10,6 @@ $(function() {
 
 	test('expose default settings', function() {
 		ok($.fn.powerTip.defaults, 'defaults is defined');
-		ok($.fn.powerTip.defaults.hasOwnProperty('fadeInTime'), 'fadeInTime exists');
-		ok($.fn.powerTip.defaults.hasOwnProperty('fadeOutTime'), 'fadeOutTime exists');
-		ok($.fn.powerTip.defaults.hasOwnProperty('followMouse'), 'followMouse exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('popupId'), 'popupId exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('intentSensitivity'), 'intentSensitivity exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('intentPollInterval'), 'intentPollInterval exists');

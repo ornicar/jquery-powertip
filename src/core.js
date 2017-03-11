@@ -16,7 +16,6 @@ var $document = $(document),
 var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_HASACTIVEHOVER = 'hasActiveHover',
 	DATA_FORCEDOPEN = 'forcedOpen',
-	DATA_HASMOUSEMOVE = 'hasMouseMove',
 	DATA_MOUSEONTOTIP = 'mouseOnToPopup',
 	DATA_ORIGINALTITLE = 'originalTitle',
 	DATA_POWERTIP = 'powertip',
@@ -148,9 +147,6 @@ $.fn.powerTip = function(opts, arg) {
  * Default options for the powerTip plugin.
  */
 $.fn.powerTip.defaults = {
-	fadeInTime: 200,
-	fadeOutTime: 100,
-	followMouse: false,
 	popupId: 'powerTip',
 	intentSensitivity: 7,
 	intentPollInterval: 100,
