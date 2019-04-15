@@ -62,11 +62,7 @@ function TooltipController(options) {
 	 */
 	function beginShowTip(element) {
 		element.data(DATA_HASACTIVEHOVER, true);
-		// show tooltip, asap
-		tipElement.queue(function queueTipInit(next) {
-			showTip(element);
-			next();
-		});
+    showTip(element);
 	}
 
 	/**
