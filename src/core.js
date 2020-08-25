@@ -16,7 +16,6 @@ var $document = $(document),
 var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_HASACTIVEHOVER = 'hasActiveHover',
 	DATA_FORCEDOPEN = 'forcedOpen',
-	DATA_ORIGINALTITLE = 'originalTitle',
 	DATA_POWERTIP = 'powertip',
 	DATA_POWERTIPJQ = 'powertipjq',
 	DATA_POWERTIPTARGET = 'powertiptarget';
@@ -27,7 +26,6 @@ var DATA_DISPLAYCONTROLLER = 'displayController',
  */
 var session = {
 	isTipOpen: false,
-	isFixedTipOpen: false,
 	isClosing: false,
 	tipOpenImminent: false,
 	activeHover: null,
@@ -95,16 +93,6 @@ $.fn.powerTip = function(opts, arg) {
 			$.powerTip.destroy($this);
 		}
 
-		// attempt to use title attribute text if there is no data-powertip,
-		// data-powertipjq or data-powertiptarget. If we do use the title
-		// attribute, delete the attribute so the browser will not show it
-		title = $this.attr('title');
-		if (!dataPowertip && !dataTarget && !dataElem && title) {
-			$this.data(DATA_POWERTIP, title);
-			$this.data(DATA_ORIGINALTITLE, title);
-			$this.removeAttr('title');
-		}
-
 		// create hover controllers for each element
 		$this.data(
 			DATA_DISPLAYCONTROLLER,
@@ -121,19 +109,6 @@ $.fn.powerTip = function(opts, arg) {
 			},
 			'mouseleave.powertip': function elementMouseLeave() {
 				$.powerTip.hide(this);
-			},
-			// keyboard events
-			'focus.powertip': function elementFocus() {
-				$.powerTip.show(this);
-			},
-			'blur.powertip': function elementBlur() {
-				$.powerTip.hide(this, true);
-			},
-			'keydown.powertip': function elementKeyDown(event) {
-				// close tooltip when the escape key is pressed
-				if (event.keyCode === 27) {
-					$.powerTip.hide(this, true);
-				}
 			}
 		});
 	}
@@ -226,20 +201,11 @@ $.powerTip = {
 	 */
 	destroy: function apiDestroy(element) {
 		$(element).off('.powertip').each(function destroy() {
-			var $this = $(this),
-				dataAttributes = [
-					DATA_ORIGINALTITLE,
+			$(this).removeData([
 					DATA_DISPLAYCONTROLLER,
 					DATA_HASACTIVEHOVER,
 					DATA_FORCEDOPEN
-				];
-
-			if ($this.data(DATA_ORIGINALTITLE)) {
-				$this.attr('title', $this.data(DATA_ORIGINALTITLE));
-				dataAttributes.push(DATA_POWERTIP);
-			}
-
-			$this.removeData(dataAttributes);
+				]);
 		});
 		return element;
 	}

@@ -110,7 +110,6 @@ function TooltipController(options) {
 
 		// set tooltip position
     positionTipOnElement(element);
-    session.isFixedTipOpen = true;
 
 		// fadein
 		tipElement.show(0, function() {
@@ -149,7 +148,6 @@ function TooltipController(options) {
 
       // reset session and tooltip element
       session.isClosing = false;
-      session.isFixedTipOpen = false;
       tipElement.removeClass();
 
       // support mouse-follow and fixed position tips at the same time by
@@ -179,7 +177,7 @@ function TooltipController(options) {
 			// iterate over the priority list and use the first placement option
 			// that does not collide with the view port. if they all collide
 			// then the last placement in the list will be used.
-			$.each(priorityList, function(idx, pos) {
+			$.each(priorityList, function(_, pos) {
 				// place tooltip and find collisions
 				var collisions = getViewportCollisions(
 					placeTooltip(element, pos),
