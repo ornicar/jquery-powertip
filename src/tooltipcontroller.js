@@ -34,15 +34,11 @@ function TooltipController(options) {
 	if (options.mouseOnToPopup) {
 		tipElement.on({
 			mouseenter: function tipMouseEnter() {
-				// we only let the mouse stay on the tooltip if it is set to let
-				// users interact with it
-				if (tipElement.data(DATA_MOUSEONTOTIP)) {
-					// check activeHover in case the mouse cursor entered the
-					// tooltip during the fadeOut and close cycle
-					if (session.activeHover) {
-						session.activeHover.data(DATA_DISPLAYCONTROLLER).cancel();
-					}
-				}
+        // check activeHover in case the mouse cursor entered the
+        // tooltip during the fadeOut and close cycle
+        if (session.activeHover) {
+          session.activeHover.data(DATA_DISPLAYCONTROLLER).cancel();
+        }
 			},
 			mouseleave: function tipMouseLeave() {
 				// check activeHover in case the mouse cursor entered the
@@ -111,8 +107,6 @@ function TooltipController(options) {
 
 		session.activeHover = element;
 		session.isTipOpen = true;
-
-		tipElement.data(DATA_MOUSEONTOTIP, options.mouseOnToPopup);
 
 		// set tooltip position
     positionTipOnElement(element);
@@ -286,13 +280,9 @@ function TooltipController(options) {
 				// for tooltips opened via the api: we need to check if it has
 				// the forcedOpen flag.
 				if (!isMouseOver(session.activeHover) && !session.activeHover.is(':focus') && !session.activeHover.data(DATA_FORCEDOPEN)) {
-					if (tipElement.data(DATA_MOUSEONTOTIP)) {
-						if (!isMouseOver(tipElement)) {
-							isDesynced = true;
-						}
-					} else {
-						isDesynced = true;
-					}
+          if (!isMouseOver(tipElement)) {
+            isDesynced = true;
+          }
 				}
 			}
 

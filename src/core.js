@@ -16,7 +16,6 @@ var $document = $(document),
 var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_HASACTIVEHOVER = 'hasActiveHover',
 	DATA_FORCEDOPEN = 'forcedOpen',
-	DATA_MOUSEONTOTIP = 'mouseOnToPopup',
 	DATA_ORIGINALTITLE = 'originalTitle',
 	DATA_POWERTIP = 'powertip',
 	DATA_POWERTIPJQ = 'powertipjq',
@@ -153,7 +152,6 @@ $.fn.powerTip.defaults = {
 	placement: 'n',
 	smartPlacement: false,
 	offset: 10,
-	mouseOnToPopup: false,
 	manual: false
 };
 
