@@ -80,12 +80,8 @@ $.fn.powerTip = function(opts, arg) {
 	initTracking();
 
 	// setup the elements
-	this.each(function elementSetup() {
-		var $this = $(this),
-			dataPowertip = $this.data(DATA_POWERTIP),
-			dataElem = $this.data(DATA_POWERTIPJQ),
-			dataTarget = $this.data(DATA_POWERTIPTARGET),
-			title;
+	this.each(function () {
+		var $this = $(this);
 
 		// handle repeated powerTip calls on the same element by destroying the
 		// original instance hooked to it and replacing it with this call
@@ -104,10 +100,10 @@ $.fn.powerTip = function(opts, arg) {
 	if (!options.manual) {
 		this.on({
 			// mouse events
-			'mouseenter.powertip': function elementMouseEnter(event) {
+			'mouseenter.powertip': function(event) {
 				$.powerTip.show(this, event);
 			},
-			'mouseleave.powertip': function elementMouseLeave() {
+			'mouseleave.powertip': function() {
 				$.powerTip.hide(this);
 			}
 		});

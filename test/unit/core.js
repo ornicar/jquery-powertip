@@ -17,7 +17,6 @@ $(function() {
 		ok($.fn.powerTip.defaults.hasOwnProperty('placement'), 'placement exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('smartPlacement'), 'smartPlacement exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('offset'), 'offset exists');
-		ok($.fn.powerTip.defaults.hasOwnProperty('mouseOnToPopup'), 'mouseOnToPopup exists');
 		ok($.fn.powerTip.defaults.hasOwnProperty('manual'), 'manual exists');
 	});
 
@@ -44,7 +43,6 @@ $(function() {
 		deepEqual(div.powerTip('hide'), div, 'original jQuery object returned for hide');
 		deepEqual(div.powerTip('resetPosition'), div, 'original jQuery object returned for resetPosition');
 		deepEqual(div.powerTip('destroy'), div, 'original jQuery object returned for destroy');
-		ok(!element.attr('title'), 'title attribute was removed');
 		ok(element.data(DATA_DISPLAYCONTROLLER), 'new DisplayController created and added to data');
 	});
 
@@ -76,18 +74,6 @@ $(function() {
 
 		element.trigger('mouseleave');
 		ok(hideTriggered, 'mouseleave event calls DisplayController.hide');
-		hideTriggered = false;
-
-		element.trigger('focus');
-		ok(showTriggered, 'focus event calls DisplayController.show');
-		showTriggered = false;
-
-		element.trigger('blur');
-		ok(hideTriggered, 'blur event calls DisplayController.hide');
-		hideTriggered = false;
-
-		element.trigger($.Event('keydown', { keyCode: 27 }));
-		ok(hideTriggered, 'keydown event for key code 27 calls DisplayController.hide');
 		hideTriggered = false;
 
 		// cleanup test element

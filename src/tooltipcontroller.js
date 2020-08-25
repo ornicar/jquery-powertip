@@ -31,24 +31,22 @@ function TooltipController(options) {
 	// if we want to be able to mouse onto the tooltip then we need to attach
 	// hover events to the tooltip that will cancel a close request on hover and
 	// start a new close request on mouseleave
-	if (options.mouseOnToPopup) {
-		tipElement.on({
-			mouseenter: function tipMouseEnter() {
-        // check activeHover in case the mouse cursor entered the
-        // tooltip during the fadeOut and close cycle
-        if (session.activeHover) {
-          session.activeHover.data(DATA_DISPLAYCONTROLLER).cancel();
-        }
-			},
-			mouseleave: function tipMouseLeave() {
-				// check activeHover in case the mouse cursor entered the
-				// tooltip during the fadeOut and close cycle
-				if (session.activeHover) {
-					session.activeHover.data(DATA_DISPLAYCONTROLLER).hide();
-				}
-			}
-		});
-	}
+  tipElement.on({
+    mouseenter: function() {
+      // check activeHover in case the mouse cursor entered the
+      // tooltip during the fadeOut and close cycle
+      if (session.activeHover) {
+        session.activeHover.data(DATA_DISPLAYCONTROLLER).cancel();
+      }
+    },
+    mouseleave: function() {
+      // check activeHover in case the mouse cursor entered the
+      // tooltip during the fadeOut and close cycle
+      if (session.activeHover) {
+        session.activeHover.data(DATA_DISPLAYCONTROLLER).hide();
+      }
+    }
+  });
 
 	/**
 	 * Gives the specified element the active-hover state and queues up the
