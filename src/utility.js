@@ -18,8 +18,8 @@ function initTracking() {
 		session.mouseTrackingActive = true;
 
 		// grab the current viewport dimensions on load
-    session.scrollLeft = $window.scrollLeft();
-    session.scrollTop = $window.scrollTop();
+    session.scrollLeft = window.scrollX;
+    session.scrollTop = window.scrollY;
     session.windowWidth = $window.width();
     session.windowHeight = $window.height();
 
@@ -33,8 +33,8 @@ function initTracking() {
 			}, { passive: true });
 
     window.addEventListener('scroll', function() {
-				var x = $window.scrollLeft(),
-					y = $window.scrollTop();
+				var x = window.scrollX,
+					y = window.scrollY;
 				if (x !== session.scrollLeft) {
 					session.currentX += x - session.scrollLeft;
 					session.scrollLeft = x;
@@ -79,9 +79,9 @@ function isMouseOver(element) {
  *     undefined if there was no tooltip content for the element.
  */
 function getTooltipContent(element) {
-	var tipText = element.data(DATA_POWERTIP),
-		tipObject = element.data(DATA_POWERTIPJQ),
-		tipTarget = element.data(DATA_POWERTIPTARGET),
+	var tipText = element[DATA_POWERTIP],
+		tipObject = element[DATA_POWERTIPJQ],
+		tipTarget = element[DATA_POWERTIPTARGET],
 		targetElement,
 		content;
 

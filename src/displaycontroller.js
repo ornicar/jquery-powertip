@@ -28,7 +28,7 @@ function DisplayController(element, options, tipController) {
 	 */
 	function openTooltip(immediate, forceOpen) {
 		cancelTimer();
-		if (!element.data(DATA_HASACTIVEHOVER)) {
+		if (!element[0][DATA_HASACTIVEHOVER]) {
 			if (!immediate) {
 				session.tipOpenImminent = true;
 				hoverTimer = setTimeout(
@@ -40,7 +40,7 @@ function DisplayController(element, options, tipController) {
 				);
 			} else {
 				if (forceOpen) {
-					element.data(DATA_FORCEDOPEN, true);
+					element[0][DATA_FORCEDOPEN] = true;
 				}
 				tipController.showTip(element);
 			}
@@ -55,8 +55,8 @@ function DisplayController(element, options, tipController) {
 	function closeTooltip(disableDelay) {
 		cancelTimer();
 		session.tipOpenImminent = false;
-		if (element.data(DATA_HASACTIVEHOVER)) {
-			element.data(DATA_FORCEDOPEN, false);
+		if (element[0][DATA_HASACTIVEHOVER]) {
+			element[0][DATA_FORCEDOPEN] = false;
 			if (!disableDelay) {
 				session.delayInProgress = true;
 				hoverTimer = setTimeout(

@@ -4,7 +4,7 @@
  * @fileoverview  Core variables, plugin object, and API.
  * @link          http://stevenbenner.github.com/jquery-powertip/
  * @author        Steven Benner (http://stevenbenner.com/)
- * @requires      jQuery 1.7+
+ * @requires      Cash.js
  */
 
 // useful private variables
@@ -68,7 +68,7 @@ $.fn.powerTip = function(opts, arg) {
 	}
 
 	// handle api method calls on the plugin, e.g. powerTip('hide')
-	if ($.type(opts) === 'string' && $.powerTip[opts]) {
+	if (typeof opts === 'string' && $.powerTip[opts]) {
 		return $.powerTip[opts].call(this, this, arg);
 	}
 
@@ -85,15 +85,12 @@ $.fn.powerTip = function(opts, arg) {
 
 		// handle repeated powerTip calls on the same element by destroying the
 		// original instance hooked to it and replacing it with this call
-		if ($this.data(DATA_DISPLAYCONTROLLER)) {
+		if (this[DATA_DISPLAYCONTROLLER]) {
 			$.powerTip.destroy($this);
 		}
 
 		// create hover controllers for each element
-		$this.data(
-			DATA_DISPLAYCONTROLLER,
-			new DisplayController($this, options, tipController)
-		);
+		this[DATA_DISPLAYCONTROLLER] = new DisplayController($this, options, tipController);
 	});
 
 	// attach events to matched elements if the manual options is not enabled
@@ -158,9 +155,9 @@ $.powerTip = {
 			trackMouse(event);
 			session.previousX = event.pageX;
 			session.previousY = event.pageY;
-			$(element).data(DATA_DISPLAYCONTROLLER).show();
+			$(element)[0][DATA_DISPLAYCONTROLLER].show();
 		} else {
-			$(element).first().data(DATA_DISPLAYCONTROLLER).show(true, true);
+			$(element).first()[0][DATA_DISPLAYCONTROLLER].show(true, true);
 		}
 		return element;
 	},
@@ -170,7 +167,7 @@ $.powerTip = {
 	 * @param {jQuery|Element} element The element the tooltip is shown for.
 	 */
 	reposition: function apiResetPosition(element) {
-		$(element).first().data(DATA_DISPLAYCONTROLLER).resetPosition();
+		$(element).first()[0][DATA_DISPLAYCONTROLLER].resetPosition();
 		return element;
 	},
 
@@ -182,10 +179,10 @@ $.powerTip = {
 	 */
 	hide: function apiCloseTip(element, immediate) {
 		if (element) {
-			$(element).first().data(DATA_DISPLAYCONTROLLER).hide(immediate);
+			$(element).first()[0][DATA_DISPLAYCONTROLLER].hide(immediate);
 		} else {
 			if (session.activeHover) {
-				session.activeHover.data(DATA_DISPLAYCONTROLLER).hide(true);
+				session.activeHover[0][DATA_DISPLAYCONTROLLER].hide(true);
 			}
 		}
 		return element;

@@ -19,12 +19,9 @@ function TooltipController(options) {
 
 	// build and append tooltip div if it does not already exist
 	if (tipElement.length === 0) {
-		tipElement = $('<div/>', { id: options.popupId });
+		tipElement = $('<div id="' + options.popupId + '"/>');
 		// grab body element if it was not populated when the script loaded
 		// note: this hack exists solely for jsfiddle support
-		if ($body.length === 0) {
-			$body = $('body');
-		}
 		$body.append(tipElement);
 	}
 
@@ -36,14 +33,14 @@ function TooltipController(options) {
       // check activeHover in case the mouse cursor entered the
       // tooltip during the fadeOut and close cycle
       if (session.activeHover) {
-        session.activeHover.data(DATA_DISPLAYCONTROLLER).cancel();
+        session.activeHover[0][DATA_DISPLAYCONTROLLER].cancel();
       }
     },
     mouseleave: function() {
       // check activeHover in case the mouse cursor entered the
       // tooltip during the fadeOut and close cycle
       if (session.activeHover) {
-        session.activeHover.data(DATA_DISPLAYCONTROLLER).hide();
+        session.activeHover[0][DATA_DISPLAYCONTROLLER].hide();
       }
     }
   });
@@ -55,7 +52,7 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function beginShowTip(element) {
-		element.data(DATA_HASACTIVEHOVER, true);
+		element[0][DATA_HASACTIVEHOVER] = true;
     showTip(element);
 	}
 
@@ -72,7 +69,7 @@ function TooltipController(options) {
 		// in the code. if that happens then we need to not proceed or we may
 		// have the fadeout callback for the last tooltip execute immediately
 		// after this code runs, causing bugs.
-		if (!element.data(DATA_HASACTIVEHOVER)) {
+		if (!element[0][DATA_HASACTIVEHOVER]) {
 			return;
 		}
 
@@ -89,7 +86,9 @@ function TooltipController(options) {
 		}
 
 		// trigger powerTipPreRender event
-		element.trigger('powerTipPreRender');
+    if (element[0].powerTipPreRender) {
+      setTimeout(function() { element[0].powerTipPreRender(element[0]); }, 0);
+    }
 
 		// set tooltip content
 		tipContent = getTooltipContent(element);
@@ -101,7 +100,7 @@ function TooltipController(options) {
 		}
 
 		// trigger powerTipRender event
-		element.trigger('powerTipRender');
+		// element.trigger('powerTipRender');
 
 		session.activeHover = element;
 		session.isTipOpen = true;
@@ -109,17 +108,12 @@ function TooltipController(options) {
 		// set tooltip position
     positionTipOnElement(element);
 
-		// fadein
-		tipElement.show(0, function() {
+		tipElement.show();
 
-      // start desync polling
-      if (!session.desyncTimeout) {
-        session.desyncTimeout = setInterval(closeDesyncedTip, 500);
-      }
-
-      // trigger powerTipOpen event
-      element.trigger('powerTipOpen');
-    });
+    // start desync polling
+    if (!session.desyncTimeout) {
+      session.desyncTimeout = setInterval(closeDesyncedTip, 500);
+    }
 	}
 
 	/**
@@ -137,26 +131,22 @@ function TooltipController(options) {
 		session.desyncTimeout = clearInterval(session.desyncTimeout);
 
 		// reset element state
-		element.data(DATA_HASACTIVEHOVER, false);
-		element.data(DATA_FORCEDOPEN, false);
+		element[0][DATA_HASACTIVEHOVER] = false;
+		element[0][DATA_FORCEDOPEN] = false;
 
 		// fade out
-		tipElement.hide(0, function() {
-      var coords = new CSSCoordinates();
+		tipElement.hide();
+    var coords = new CSSCoordinates();
 
-      // reset session and tooltip element
-      session.isClosing = false;
-      tipElement.removeClass();
+    // reset session and tooltip element
+    session.isClosing = false;
+    tipElement.removeClass();
 
-      // support mouse-follow and fixed position tips at the same time by
-      // moving the tooltip to the last cursor location after it is hidden
-      coords.set('top', session.currentY + options.offset);
-      coords.set('left', session.currentX + options.offset);
-      tipElement.css(coords);
-
-      // trigger powerTipClose event
-      element.trigger('powerTipClose');
-    });
+    // support mouse-follow and fixed position tips at the same time by
+    // moving the tooltip to the last cursor location after it is hidden
+    coords.set('top', session.currentY + options.offset);
+    coords.set('left', session.currentX + options.offset);
+    tipElement.css(coords);
 	}
 
 	/**
@@ -265,7 +255,7 @@ function TooltipController(options) {
 		// close the tip if such a situation arises.
 		if (session.isTipOpen && !session.isClosing && !session.delayInProgress) {
 			// user moused onto another tip or active hover is disabled
-			if (session.activeHover.data(DATA_HASACTIVEHOVER) === false || session.activeHover.is(':disabled')) {
+			if (session.activeHover[0][DATA_HASACTIVEHOVER] === false || session.activeHover.is(':disabled')) {
 				isDesynced = true;
 			} else {
 				// hanging tip - have to test if mouse position is not over the
@@ -275,7 +265,7 @@ function TooltipController(options) {
 				// not have focus.
 				// for tooltips opened via the api: we need to check if it has
 				// the forcedOpen flag.
-				if (!isMouseOver(session.activeHover) && !session.activeHover.is(':focus') && !session.activeHover.data(DATA_FORCEDOPEN)) {
+				if (!isMouseOver(session.activeHover) && !session.activeHover.is(':focus') && !session.activeHover[0][DATA_FORCEDOPEN]) {
           if (!isMouseOver(tipElement)) {
             isDesynced = true;
           }
