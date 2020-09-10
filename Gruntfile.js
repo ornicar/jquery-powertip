@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 			min: 'jquery.powertip.min.js',
 			zip: 'jquery.powertip-<%= pkg.version %>.zip'
 		},
-    banner: '/*! hacked jquery-powertip https://github.com/ornicar/jquery-powertip/tree/lila */',
+    banner: '',
 		clean: {
 			dist: [ '<%= buildpath %>' ],
 			temp: [ '<%= temppath %>' ]
