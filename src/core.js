@@ -7,9 +7,6 @@
  * @requires      Cash.js
  */
 
-// useful private variables
-var $window = $(window), $body = $('body');
-
 // constants
 var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_HASACTIVEHOVER = 'hasActiveHover',

@@ -20,9 +20,7 @@ function TooltipController(options) {
 	// build and append tooltip div if it does not already exist
 	if (tipElement.length === 0) {
 		tipElement = $('<div id="' + options.popupId + '"/>');
-		// grab body element if it was not populated when the script loaded
-		// note: this hack exists solely for jsfiddle support
-		$body.append(tipElement);
+		$('body').append(tipElement);
 	}
 
 	// if we want to be able to mouse onto the tooltip then we need to attach

@@ -16,6 +16,7 @@
 function initTracking() {
 	if (!session.mouseTrackingActive) {
 		session.mouseTrackingActive = true;
+    var $window = $(window);
 
 		// grab the current viewport dimensions on load
     session.scrollLeft = window.scrollX;
