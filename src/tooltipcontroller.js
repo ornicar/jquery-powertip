@@ -99,7 +99,6 @@ function TooltipController(options) {
 			return;
 		}
 
-		// trigger powerTipRender event
 		// element.trigger('powerTipRender');
 
 		session.activeHover = element;
