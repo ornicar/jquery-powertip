@@ -24,7 +24,7 @@ function initTracking() {
     session.windowHeight = $window.height();
 
 		// hook mouse move tracking
-		$document.on('mousemove', trackMouse);
+    document.addEventListener('mousemove', trackMouse);
 
 		// hook viewport dimensions tracking
     window.addEventListener('resize', function() {
