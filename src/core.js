@@ -110,10 +110,10 @@ $.fn.powerTip = function(opts, arg) {
 $.fn.powerTip.defaults = {
 	popupId: 'powerTip',
 	intentSensitivity: 7,
-	intentPollInterval: 100,
-	closeDelay: 100,
+	intentPollInterval: 150,
+	closeDelay: 150,
 	placement: 'n',
-	smartPlacement: false,
+	smartPlacement: true,
   defaultSize: [260, 120],
 	offset: 10
 };
