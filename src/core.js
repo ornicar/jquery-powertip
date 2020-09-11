@@ -53,7 +53,7 @@ var Collision = {
  * @param {*=} [arg] Argument for an invoked method (optional).
  * @return {jQuery} jQuery object for the matched selectors.
  */
-$.fn.powerTip = function(opts, arg) {
+$.fn.powerTip = function(opts) {
 	// don't do any work if there were no matched elements
 	if (!this.length) {
 		return this;
