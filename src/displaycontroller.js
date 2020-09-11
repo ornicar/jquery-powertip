@@ -32,7 +32,7 @@ function DisplayController(element, options, tipController) {
 			if (!immediate) {
 				session.tipOpenImminent = true;
 				hoverTimer = setTimeout(
-					function intentDelay() {
+					function() {
 						hoverTimer = null;
 						checkForIntent();
 					},

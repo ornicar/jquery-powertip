@@ -62,7 +62,6 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function showTip(element) {
-		var tipContent;
 
 		// it is possible, especially with keyboard navigation, to move on to
 		// another element with a tooltip during the queue to get to this point
@@ -85,21 +84,12 @@ function TooltipController(options) {
 			return;
 		}
 
+    tipElement.empty();
+
 		// trigger powerTipPreRender event
-    if (element[0].powerTipPreRender) {
-      setTimeout(function() { element[0].powerTipPreRender(element[0]); }, 0);
+    if (options.preRender) {
+      options.preRender(element[0]);
     }
-
-		// set tooltip content
-		tipContent = getTooltipContent(element);
-		if (tipContent) {
-			tipElement.empty().append(tipContent);
-		} else {
-			// we have no content to display, give up
-			return;
-		}
-
-		// element.trigger('powerTipRender');
 
 		session.activeHover = element;
 		session.isTipOpen = true;
@@ -168,8 +158,8 @@ function TooltipController(options) {
 				// place tooltip and find collisions
 				var collisions = getViewportCollisions(
 					placeTooltip(element, pos),
-					tipElement.outerWidth(),
-					tipElement.outerHeight()
+					tipElement.outerWidth() || options.defaultSize[0],
+					tipElement.outerHeight() || options.defaultSize[1]
 				);
 
 				// update the final placement variable
@@ -186,9 +176,6 @@ function TooltipController(options) {
 			placeTooltip(element, options.placement);
 			finalPlacement = options.placement;
 		}
-
-		// add placement as class for CSS arrows
-		tipElement.addClass(finalPlacement);
 	}
 
 	/**
@@ -216,8 +203,8 @@ function TooltipController(options) {
 		// rendered dimensions after the tooltip has been positioned
 		do {
 			// grab the current tip dimensions
-			tipWidth = tipElement.outerWidth();
-			tipHeight = tipElement.outerHeight();
+			tipWidth = tipElement.outerWidth() || options.defaultSize[0];
+			tipHeight = tipElement.outerHeight() || options.defaultSize[1];
 
 			// get placement coordinates
 			coords = placementCalculator.compute(

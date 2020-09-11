@@ -72,42 +72,6 @@ function isMouseOver(element) {
 }
 
 /**
- * Fetches the tooltip content from the specified element's data attributes.
- * @private
- * @param {jQuery} element The element to get the tooltip content for.
- * @return {(string|jQuery|undefined)} The text/HTML string, jQuery object, or
- *     undefined if there was no tooltip content for the element.
- */
-function getTooltipContent(element) {
-	var tipText = element[DATA_POWERTIP],
-		tipObject = element[DATA_POWERTIPJQ],
-		tipTarget = element[DATA_POWERTIPTARGET],
-		targetElement,
-		content;
-
-	if (tipText) {
-		if ($.isFunction(tipText)) {
-			tipText = tipText.call(element[0]);
-		}
-		content = tipText;
-	} else if (tipObject) {
-		if ($.isFunction(tipObject)) {
-			tipObject = tipObject.call(element[0]);
-		}
-		if (tipObject.length > 0) {
-			content = tipObject.clone(true, true);
-		}
-	} else if (tipTarget) {
-		targetElement = $('#' + tipTarget);
-		if (targetElement.length > 0) {
-			content = targetElement.html();
-		}
-	}
-
-	return content;
-}
-
-/**
  * Finds any viewport collisions that an element (the tooltip) would have if it
  * were absolutely positioned at the specified coordinates.
  * @private

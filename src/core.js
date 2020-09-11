@@ -15,10 +15,7 @@ var $document = $(document),
 // constants
 var DATA_DISPLAYCONTROLLER = 'displayController',
 	DATA_HASACTIVEHOVER = 'hasActiveHover',
-	DATA_FORCEDOPEN = 'forcedOpen',
-	DATA_POWERTIP = 'powertip',
-	DATA_POWERTIPJQ = 'powertipjq',
-	DATA_POWERTIPTARGET = 'powertiptarget';
+	DATA_FORCEDOPEN = 'forcedOpen';
 
 /**
  * Session data
@@ -94,17 +91,15 @@ $.fn.powerTip = function(opts, arg) {
 	});
 
 	// attach events to matched elements if the manual options is not enabled
-	if (!options.manual) {
-		this.on({
-			// mouse events
-			'mouseenter.powertip': function(event) {
-				$.powerTip.show(this, event);
-			},
-			'mouseleave.powertip': function() {
-				$.powerTip.hide(this);
-			}
-		});
-	}
+  this.on({
+    // mouse events
+    mouseenter: function(event) {
+      $.powerTip.show(this, event);
+    },
+    mouseleave: function() {
+      $.powerTip.hide(this);
+    }
+  });
 
 	return this;
 };
@@ -119,8 +114,8 @@ $.fn.powerTip.defaults = {
 	closeDelay: 100,
 	placement: 'n',
 	smartPlacement: false,
-	offset: 10,
-	manual: false
+  defaultSize: [260, 120],
+	offset: 10
 };
 
 /**
@@ -193,12 +188,10 @@ $.powerTip = {
 	 * @param {jQuery|Element} element The element with the powerTip instance.
 	 */
 	destroy: function apiDestroy(element) {
-		$(element).off('.powertip').each(function destroy() {
-			$(this).removeData([
-					DATA_DISPLAYCONTROLLER,
-					DATA_HASACTIVEHOVER,
-					DATA_FORCEDOPEN
-				]);
+		$(element).off('.powertip').each(function() {
+      delete this[DATA_DISPLAYCONTROLLER];
+      delete this[DATA_HASACTIVEHOVER];
+      delete this[DATA_FORCEDOPEN];
 		});
 		return element;
 	}
