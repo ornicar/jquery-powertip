@@ -60,7 +60,7 @@ $.fn.powerTip = function(opts, arg) {
 	}
 
 	// extend options and instantiate TooltipController
-	var options = $.extend({}, $.fn.powerTip.defaults, opts),
+	var options = Object.assign({}, $.fn.powerTip.defaults, opts),
 		tipController = new TooltipController(options);
 
 	// hook mouse and viewport dimension tracking
