@@ -70,9 +70,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		qunit: {
-			files: [ 'test/index.html' ]
-		},
 		uglify: {
 			dist: {
 				files: {
@@ -189,11 +186,7 @@ module.exports = function(grunt) {
 			},
 			src: {
 				files: [ 'src/**/*.js', 'src/.jshintrc' ],
-				tasks: [ 'concat', 'jshint:dist', 'qunit' ]
-			},
-			tests: {
-				files: [ 'test/**/*.js', 'test/.jshintrc' ],
-				tasks: [ 'jshint:tests', 'qunit' ]
+				tasks: [ 'concat', 'jshint:dist' ]
 			},
 			css: {
 				files: [ 'css/*.css' ],
@@ -223,7 +216,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
@@ -235,11 +227,11 @@ module.exports = function(grunt) {
 	// register grunt tasks
 	grunt.registerTask('default', [ 'build:js' ]);
 	grunt.registerTask('build', [ 'build:js', 'build:css', 'build:docs' ]);
-	grunt.registerTask('build:js', [ 'concat:core', 'indent', 'concat:dist', 'clean:temp', 'jshint', 'qunit', 'uglify' ]);
+	grunt.registerTask('build:js', [ 'concat:core', 'indent', 'concat:dist', 'clean:temp', 'jshint', 'uglify' ]);
 	grunt.registerTask('build:css', [ 'csslint', 'copy:css', 'cssmin' ]);
 	grunt.registerTask('build:docs', [ 'copy:examples', 'copy:license' ]);
 	grunt.registerTask('build:release', [ 'clean:dist', 'build', 'compress' ]);
-	grunt.registerTask('travis', [ 'concat:core', 'indent', 'concat:dist', 'clean:temp', 'jshint', 'qunit', 'csslint' ]);
+	grunt.registerTask('travis', [ 'concat:core', 'indent', 'concat:dist', 'clean:temp', 'jshint', 'csslint' ]);
 	grunt.registerTask('deploy:docs', [ 'build:gh-pages', 'shell:checkoutpages', 'copy:index', 'shell:addindex', 'shell:checkoutmaster' ]);
 	grunt.registerTask('deploy:assets', [ 'build:release', 'shell:checkoutpages', 'copy:zipassets', 'copy:jsassets', 'copy:cssassets', 'shell:addassets', 'shell:checkoutmaster' ]);
 
