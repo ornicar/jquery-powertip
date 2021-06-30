@@ -17,17 +17,20 @@ var DATA_DISPLAYCONTROLLER = 'displayController',
  * Private properties global to all powerTip instances
  */
 var session = {
-	isTipOpen: false,
-	isClosing: false,
-	tipOpenImminent: false,
-	activeHover: null,
+	// for each popupId
+	scoped: {
+		// isTipOpen: false,
+		// isClosing: false,
+		// tipOpenImminent: false,
+		// activeHover: null,
+		// desyncTimeout: null,
+		// delayInProgress: false,
+	},
 	currentX: 0,
 	currentY: 0,
 	previousX: 0,
 	previousY: 0,
-	desyncTimeout: null,
 	mouseTrackingActive: false,
-	delayInProgress: false,
 	windowWidth: 0,
 	windowHeight: 0,
 	scrollTop: 0,
@@ -163,17 +166,11 @@ $.powerTip = {
 	/**
 	 * Attempts to close any open tooltips.
 	 * @param {(jQuery|Element)=} element The element with the tooltip that
-	 *     should be closed (optional).
+	 *     should be closed.
 	 * @param {boolean=} immediate Disable close delay (optional).
 	 */
 	hide: function apiCloseTip(element, immediate) {
-		if (element) {
-			$(element).first()[0][DATA_DISPLAYCONTROLLER].hide(immediate);
-		} else {
-			if (session.activeHover) {
-				session.activeHover[0][DATA_DISPLAYCONTROLLER].hide(true);
-			}
-		}
+		$(element).first()[0][DATA_DISPLAYCONTROLLER].hide(immediate);
 		return element;
 	},
 

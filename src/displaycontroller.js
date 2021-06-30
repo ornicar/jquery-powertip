@@ -18,6 +18,7 @@
  */
 function DisplayController(element, options, tipController) {
 	var hoverTimer = null;
+	var scopedSession = session.scoped[options.popupId];
 
 	/**
 	 * Begins the process of showing a tooltip.
@@ -30,7 +31,7 @@ function DisplayController(element, options, tipController) {
 		cancelTimer();
 		if (!element[0][DATA_HASACTIVEHOVER]) {
 			if (!immediate) {
-				session.tipOpenImminent = true;
+				scopedSession.tipOpenImminent = true;
 				hoverTimer = setTimeout(function () {
 					hoverTimer = null;
 					checkForIntent();
@@ -51,11 +52,11 @@ function DisplayController(element, options, tipController) {
 	 */
 	function closeTooltip(disableDelay) {
 		cancelTimer();
-		session.tipOpenImminent = false;
+		scopedSession.tipOpenImminent = false;
 		if (element[0][DATA_HASACTIVEHOVER]) {
 			element[0][DATA_FORCEDOPEN] = false;
 			if (!disableDelay) {
-				session.delayInProgress = true;
+				scopedSession.delayInProgress = true;
 				hoverTimer = setTimeout(function closeDelay() {
 					hoverTimer = null;
 					tipController.hideTip(element);
@@ -95,7 +96,7 @@ function DisplayController(element, options, tipController) {
 	 */
 	function cancelTimer() {
 		hoverTimer = clearTimeout(hoverTimer);
-		session.delayInProgress = false;
+		scopedSession.delayInProgress = false;
 	}
 
 	/**
