@@ -24,45 +24,51 @@ function PlacementCalculator() {
 	 * @param {number} offset Distance to offset tooltips in pixels.
 	 * @return {CSSCoordinates} A CSSCoordinates object with the position.
 	 */
-	function computePlacementCoords(element, placement, tipWidth, tipHeight, offset) {
+	function computePlacementCoords(
+		element,
+		placement,
+		tipWidth,
+		tipHeight,
+		offset
+	) {
 		var placementBase = placement.split('-')[0], // ignore 'alt' for corners
 			coords = new CSSCoordinates(),
 			position = getHtmlPlacement(element, placementBase);
 
 		// calculate the appropriate x and y position in the document
 		switch (placement) {
-		case 'n':
-			coords.set('left', position.left - (tipWidth / 2));
-			coords.set('bottom', session.windowHeight - position.top + offset);
-			break;
-		case 'e':
-			coords.set('left', position.left + offset);
-			coords.set('top', position.top - (tipHeight / 2));
-			break;
-		case 's':
-			coords.set('left', position.left - (tipWidth / 2));
-			coords.set('top', position.top + offset);
-			break;
-		case 'w':
-			coords.set('top', position.top - (tipHeight / 2));
-			coords.set('right', session.windowWidth - position.left + offset);
-			break;
-		case 'nw':
-			coords.set('bottom', session.windowHeight - position.top + offset);
-			coords.set('right', session.windowWidth - position.left - 20);
-			break;
-		case 'ne':
-			coords.set('left', position.left - 20);
-			coords.set('bottom', session.windowHeight - position.top + offset);
-			break;
-		case 'sw':
-			coords.set('top', position.top + offset);
-			coords.set('right', session.windowWidth - position.left - 20);
-			break;
-		case 'se':
-			coords.set('left', position.left - 20);
-			coords.set('top', position.top + offset);
-			break;
+			case 'n':
+				coords.set('left', position.left - tipWidth / 2);
+				coords.set('bottom', session.windowHeight - position.top + offset);
+				break;
+			case 'e':
+				coords.set('left', position.left + offset);
+				coords.set('top', position.top - tipHeight / 2);
+				break;
+			case 's':
+				coords.set('left', position.left - tipWidth / 2);
+				coords.set('top', position.top + offset);
+				break;
+			case 'w':
+				coords.set('top', position.top - tipHeight / 2);
+				coords.set('right', session.windowWidth - position.left + offset);
+				break;
+			case 'nw':
+				coords.set('bottom', session.windowHeight - position.top + offset);
+				coords.set('right', session.windowWidth - position.left - 20);
+				break;
+			case 'ne':
+				coords.set('left', position.left - 20);
+				coords.set('bottom', session.windowHeight - position.top + offset);
+				break;
+			case 'sw':
+				coords.set('top', position.top + offset);
+				coords.set('right', session.windowWidth - position.left - 20);
+				break;
+			case 'se':
+				coords.set('left', position.left - 20);
+				coords.set('top', position.top + offset);
+				break;
 		}
 
 		return coords;
@@ -85,43 +91,43 @@ function PlacementCalculator() {
 
 		// calculate the appropriate x and y position in the document
 		switch (placement) {
-		case 'n':
-			left = objectOffset.left + objectWidth / 2;
-			top = objectOffset.top;
-			break;
-		case 'e':
-			left = objectOffset.left + objectWidth;
-			top = objectOffset.top + objectHeight / 2;
-			break;
-		case 's':
-			left = objectOffset.left + objectWidth / 2;
-			top = objectOffset.top + objectHeight;
-			break;
-		case 'w':
-			left = objectOffset.left;
-			top = objectOffset.top + objectHeight / 2;
-			break;
-		case 'nw':
-			left = objectOffset.left;
-			top = objectOffset.top;
-			break;
-		case 'ne':
-			left = objectOffset.left + objectWidth;
-			top = objectOffset.top;
-			break;
-		case 'sw':
-			left = objectOffset.left;
-			top = objectOffset.top + objectHeight;
-			break;
-		case 'se':
-			left = objectOffset.left + objectWidth;
-			top = objectOffset.top + objectHeight;
-			break;
+			case 'n':
+				left = objectOffset.left + objectWidth / 2;
+				top = objectOffset.top;
+				break;
+			case 'e':
+				left = objectOffset.left + objectWidth;
+				top = objectOffset.top + objectHeight / 2;
+				break;
+			case 's':
+				left = objectOffset.left + objectWidth / 2;
+				top = objectOffset.top + objectHeight;
+				break;
+			case 'w':
+				left = objectOffset.left;
+				top = objectOffset.top + objectHeight / 2;
+				break;
+			case 'nw':
+				left = objectOffset.left;
+				top = objectOffset.top;
+				break;
+			case 'ne':
+				left = objectOffset.left + objectWidth;
+				top = objectOffset.top;
+				break;
+			case 'sw':
+				left = objectOffset.left;
+				top = objectOffset.top + objectHeight;
+				break;
+			case 'se':
+				left = objectOffset.left + objectWidth;
+				top = objectOffset.top + objectHeight;
+				break;
 		}
 
 		return {
 			top: top,
-			left: left
+			left: left,
 		};
 	}
 

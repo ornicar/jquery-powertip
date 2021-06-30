@@ -31,13 +31,10 @@ function DisplayController(element, options, tipController) {
 		if (!element[0][DATA_HASACTIVEHOVER]) {
 			if (!immediate) {
 				session.tipOpenImminent = true;
-				hoverTimer = setTimeout(
-					function() {
-						hoverTimer = null;
-						checkForIntent();
-					},
-					options.intentPollInterval
-				);
+				hoverTimer = setTimeout(function () {
+					hoverTimer = null;
+					checkForIntent();
+				}, options.intentPollInterval);
 			} else {
 				if (forceOpen) {
 					element[0][DATA_FORCEDOPEN] = true;
@@ -59,14 +56,11 @@ function DisplayController(element, options, tipController) {
 			element[0][DATA_FORCEDOPEN] = false;
 			if (!disableDelay) {
 				session.delayInProgress = true;
-				hoverTimer = setTimeout(
-					function closeDelay() {
-						hoverTimer = null;
-						tipController.hideTip(element);
-						session.delayInProgress = false;
-					},
-					options.closeDelay
-				);
+				hoverTimer = setTimeout(function closeDelay() {
+					hoverTimer = null;
+					tipController.hideTip(element);
+					session.delayInProgress = false;
+				}, options.closeDelay);
 			} else {
 				tipController.hideTip(element);
 			}

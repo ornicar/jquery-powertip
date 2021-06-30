@@ -31,7 +31,7 @@ var session = {
 	windowWidth: 0,
 	windowHeight: 0,
 	scrollTop: 0,
-	scrollLeft: 0
+	scrollLeft: 0,
 };
 
 /**
@@ -43,7 +43,7 @@ var Collision = {
 	top: 1,
 	bottom: 2,
 	left: 4,
-	right: 8
+	right: 8,
 };
 
 /**
@@ -53,7 +53,7 @@ var Collision = {
  * @param {*=} [arg] Argument for an invoked method (optional).
  * @return {jQuery} jQuery object for the matched selectors.
  */
-$.fn.powerTip = function(opts) {
+$.fn.powerTip = function (opts) {
 	// don't do any work if there were no matched elements
 	if (!this.length) {
 		return this;
@@ -77,19 +77,23 @@ $.fn.powerTip = function(opts) {
 		}
 
 		// create hover controllers for each element
-		this[DATA_DISPLAYCONTROLLER] = new DisplayController($this, options, tipController);
+		this[DATA_DISPLAYCONTROLLER] = new DisplayController(
+			$this,
+			options,
+			tipController
+		);
 	});
 
 	// attach events to matched elements if the manual options is not enabled
-  this.on({
-    // mouse events
-    mouseenter: function(event) {
-      $.powerTip.show(this, event);
-    },
-    mouseleave: function() {
-      $.powerTip.hide(this);
-    }
-  });
+	this.on({
+		// mouse events
+		mouseenter: function (event) {
+			$.powerTip.show(this, event);
+		},
+		mouseleave: function () {
+			$.powerTip.hide(this);
+		},
+	});
 
 	return this;
 };
@@ -104,8 +108,8 @@ $.fn.powerTip.defaults = {
 	closeDelay: 150,
 	placement: 'n',
 	smartPlacement: true,
-  defaultSize: [260, 120],
-	offset: 10
+	defaultSize: [260, 120],
+	offset: 10,
 };
 
 /**
@@ -122,7 +126,7 @@ $.fn.powerTip.smartPlacementLists = {
 	nw: ['nw', 'w', 'sw', 'n', 's', 'se', 'nw'],
 	ne: ['ne', 'e', 'se', 'n', 's', 'sw', 'ne'],
 	sw: ['sw', 'w', 'nw', 's', 'n', 'ne', 'sw'],
-	se: ['se', 'e', 'ne', 's', 'n', 'nw', 'se']
+	se: ['se', 'e', 'ne', 's', 'n', 'nw', 'se'],
 };
 
 /**
@@ -178,13 +182,15 @@ $.powerTip = {
 	 * @param {jQuery|Element} element The element with the powerTip instance.
 	 */
 	destroy: function apiDestroy(element) {
-		$(element).off('.powertip').each(function() {
-      delete this[DATA_DISPLAYCONTROLLER];
-      delete this[DATA_HASACTIVEHOVER];
-      delete this[DATA_FORCEDOPEN];
-		});
+		$(element)
+			.off('.powertip')
+			.each(function () {
+				delete this[DATA_DISPLAYCONTROLLER];
+				delete this[DATA_HASACTIVEHOVER];
+				delete this[DATA_FORCEDOPEN];
+			});
 		return element;
-	}
+	},
 };
 
 // API aliasing

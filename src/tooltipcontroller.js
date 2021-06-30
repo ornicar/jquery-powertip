@@ -26,22 +26,22 @@ function TooltipController(options) {
 	// if we want to be able to mouse onto the tooltip then we need to attach
 	// hover events to the tooltip that will cancel a close request on hover and
 	// start a new close request on mouseleave
-  tipElement.on({
-    mouseenter: function() {
-      // check activeHover in case the mouse cursor entered the
-      // tooltip during the fadeOut and close cycle
-      if (session.activeHover) {
-        session.activeHover[0][DATA_DISPLAYCONTROLLER].cancel();
-      }
-    },
-    mouseleave: function() {
-      // check activeHover in case the mouse cursor entered the
-      // tooltip during the fadeOut and close cycle
-      if (session.activeHover) {
-        session.activeHover[0][DATA_DISPLAYCONTROLLER].hide();
-      }
-    }
-  });
+	tipElement.on({
+		mouseenter: function () {
+			// check activeHover in case the mouse cursor entered the
+			// tooltip during the fadeOut and close cycle
+			if (session.activeHover) {
+				session.activeHover[0][DATA_DISPLAYCONTROLLER].cancel();
+			}
+		},
+		mouseleave: function () {
+			// check activeHover in case the mouse cursor entered the
+			// tooltip during the fadeOut and close cycle
+			if (session.activeHover) {
+				session.activeHover[0][DATA_DISPLAYCONTROLLER].hide();
+			}
+		},
+	});
 
 	/**
 	 * Gives the specified element the active-hover state and queues up the
@@ -51,7 +51,7 @@ function TooltipController(options) {
 	 */
 	function beginShowTip(element) {
 		element[0][DATA_HASACTIVEHOVER] = true;
-    showTip(element);
+		showTip(element);
 	}
 
 	/**
@@ -60,7 +60,6 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function showTip(element) {
-
 		// it is possible, especially with keyboard navigation, to move on to
 		// another element with a tooltip during the queue to get to this point
 		// in the code. if that happens then we need to not proceed or we may
@@ -76,31 +75,31 @@ function TooltipController(options) {
 			if (!session.isClosing) {
 				hideTip(session.activeHover);
 			}
-      setTimeout(function() {
+			setTimeout(function () {
 				showTip(element);
 			}, 100);
 			return;
 		}
 
-    tipElement.empty();
+		tipElement.empty();
 
 		// trigger powerTipPreRender event
-    if (options.preRender) {
-      options.preRender(element[0]);
-    }
+		if (options.preRender) {
+			options.preRender(element[0]);
+		}
 
 		session.activeHover = element;
 		session.isTipOpen = true;
 
 		// set tooltip position
-    positionTipOnElement(element);
+		positionTipOnElement(element);
 
 		tipElement.show();
 
-    // start desync polling
-    if (!session.desyncTimeout) {
-      session.desyncTimeout = setInterval(closeDesyncedTip, 500);
-    }
+		// start desync polling
+		if (!session.desyncTimeout) {
+			session.desyncTimeout = setInterval(closeDesyncedTip, 500);
+		}
 	}
 
 	/**
@@ -123,17 +122,17 @@ function TooltipController(options) {
 
 		// fade out
 		tipElement.hide();
-    var coords = new CSSCoordinates();
+		var coords = new CSSCoordinates();
 
-    // reset session and tooltip element
-    session.isClosing = false;
-    tipElement.removeClass();
+		// reset session and tooltip element
+		session.isClosing = false;
+		tipElement.removeClass();
 
-    // support mouse-follow and fixed position tips at the same time by
-    // moving the tooltip to the last cursor location after it is hidden
-    coords.set('top', session.currentY + options.offset);
-    coords.set('left', session.currentX + options.offset);
-    tipElement.css(coords);
+		// support mouse-follow and fixed position tips at the same time by
+		// moving the tooltip to the last cursor location after it is hidden
+		coords.set('top', session.currentY + options.offset);
+		coords.set('left', session.currentX + options.offset);
+		tipElement.css(coords);
 	}
 
 	/**
@@ -143,8 +142,7 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function positionTipOnElement(element) {
-		var priorityList,
-			finalPlacement;
+		var priorityList, finalPlacement;
 
 		if (options.smartPlacement) {
 			priorityList = $.fn.powerTip.smartPlacementLists[options.placement];
@@ -152,7 +150,7 @@ function TooltipController(options) {
 			// iterate over the priority list and use the first placement option
 			// that does not collide with the view port. if they all collide
 			// then the last placement in the list will be used.
-			$.each(priorityList, function(_, pos) {
+			$.each(priorityList, function (_, pos) {
 				// place tooltip and find collisions
 				var collisions = getViewportCollisions(
 					placeTooltip(element, pos),
@@ -219,7 +217,8 @@ function TooltipController(options) {
 			// sanity check: limit to 5 iterations, and...
 			++iterationCount <= 5 &&
 			// try again if the dimensions changed after placement
-			(tipWidth !== tipElement.outerWidth() || tipHeight !== tipElement.outerHeight())
+			(tipWidth !== tipElement.outerWidth() ||
+				tipHeight !== tipElement.outerHeight())
 		);
 
 		return coords;
@@ -239,7 +238,10 @@ function TooltipController(options) {
 		// close the tip if such a situation arises.
 		if (session.isTipOpen && !session.isClosing && !session.delayInProgress) {
 			// user moused onto another tip or active hover is disabled
-			if (session.activeHover[0][DATA_HASACTIVEHOVER] === false || session.activeHover.is(':disabled')) {
+			if (
+				session.activeHover[0][DATA_HASACTIVEHOVER] === false ||
+				session.activeHover.is(':disabled')
+			) {
 				isDesynced = true;
 			} else {
 				// hanging tip - have to test if mouse position is not over the
@@ -249,10 +251,14 @@ function TooltipController(options) {
 				// not have focus.
 				// for tooltips opened via the api: we need to check if it has
 				// the forcedOpen flag.
-				if (!isMouseOver(session.activeHover) && !session.activeHover.is(':focus') && !session.activeHover[0][DATA_FORCEDOPEN]) {
-          if (!isMouseOver(tipElement)) {
-            isDesynced = true;
-          }
+				if (
+					!isMouseOver(session.activeHover) &&
+					!session.activeHover.is(':focus') &&
+					!session.activeHover[0][DATA_FORCEDOPEN]
+				) {
+					if (!isMouseOver(tipElement)) {
+						isDesynced = true;
+					}
 				}
 			}
 
