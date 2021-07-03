@@ -16,6 +16,10 @@
 function TooltipController(options) {
 	var placementCalculator = new PlacementCalculator(),
 		tipElement = $('#' + options.popupId);
+	var scopedSession = session.scoped[options.popupId];
+	if (!scopedSession) {
+		session.scoped[options.popupId] = scopedSession = {};
+	}
 
 	// build and append tooltip div if it does not already exist
 	if (tipElement.length === 0) {
@@ -26,22 +30,22 @@ function TooltipController(options) {
 	// if we want to be able to mouse onto the tooltip then we need to attach
 	// hover events to the tooltip that will cancel a close request on hover and
 	// start a new close request on mouseleave
-  tipElement.on({
-    mouseenter: function() {
-      // check activeHover in case the mouse cursor entered the
-      // tooltip during the fadeOut and close cycle
-      if (session.activeHover) {
-        session.activeHover[0][DATA_DISPLAYCONTROLLER].cancel();
-      }
-    },
-    mouseleave: function() {
-      // check activeHover in case the mouse cursor entered the
-      // tooltip during the fadeOut and close cycle
-      if (session.activeHover) {
-        session.activeHover[0][DATA_DISPLAYCONTROLLER].hide();
-      }
-    }
-  });
+	tipElement.on({
+		mouseenter: function () {
+			// check activeHover in case the mouse cursor entered the
+			// tooltip during the fadeOut and close cycle
+			if (scopedSession.activeHover) {
+				scopedSession.activeHover[0][DATA_DISPLAYCONTROLLER].cancel();
+			}
+		},
+		mouseleave: function () {
+			// check activeHover in case the mouse cursor entered the
+			// tooltip during the fadeOut and close cycle
+			if (scopedSession.activeHover) {
+				scopedSession.activeHover[0][DATA_DISPLAYCONTROLLER].hide();
+			}
+		},
+	});
 
 	/**
 	 * Gives the specified element the active-hover state and queues up the
@@ -51,7 +55,7 @@ function TooltipController(options) {
 	 */
 	function beginShowTip(element) {
 		element[0][DATA_HASACTIVEHOVER] = true;
-    showTip(element);
+		showTip(element);
 	}
 
 	/**
@@ -60,7 +64,6 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function showTip(element) {
-
 		// it is possible, especially with keyboard navigation, to move on to
 		// another element with a tooltip during the queue to get to this point
 		// in the code. if that happens then we need to not proceed or we may
@@ -72,35 +75,35 @@ function TooltipController(options) {
 
 		// if the tooltip is open and we got asked to open another one then the
 		// old one is still in its fadeOut cycle, so wait and try again
-		if (session.isTipOpen) {
-			if (!session.isClosing) {
-				hideTip(session.activeHover);
+		if (scopedSession.isTipOpen) {
+			if (!scopedSession.isClosing) {
+				hideTip(scopedSession.activeHover);
 			}
-      setTimeout(function() {
+			setTimeout(function () {
 				showTip(element);
 			}, 100);
 			return;
 		}
 
-    tipElement.empty();
+		tipElement.empty();
 
 		// trigger powerTipPreRender event
-    if (options.preRender) {
-      options.preRender(element[0]);
-    }
+		if (options.preRender) {
+			options.preRender(element[0]);
+		}
 
-		session.activeHover = element;
-		session.isTipOpen = true;
+		scopedSession.activeHover = element;
+		scopedSession.isTipOpen = true;
 
 		// set tooltip position
-    positionTipOnElement(element);
+		positionTipOnElement(element);
 
 		tipElement.show();
 
-    // start desync polling
-    if (!session.desyncTimeout) {
-      session.desyncTimeout = setInterval(closeDesyncedTip, 500);
-    }
+		// start desync polling
+		if (!scopedSession.desyncTimeout) {
+			scopedSession.desyncTimeout = setInterval(closeDesyncedTip, 500);
+		}
 	}
 
 	/**
@@ -110,12 +113,12 @@ function TooltipController(options) {
 	 */
 	function hideTip(element) {
 		// reset session
-		session.isClosing = true;
-		session.activeHover = null;
-		session.isTipOpen = false;
+		scopedSession.isClosing = true;
+		scopedSession.activeHover = null;
+		scopedSession.isTipOpen = false;
 
 		// stop desync polling
-		session.desyncTimeout = clearInterval(session.desyncTimeout);
+		scopedSession.desyncTimeout = clearInterval(scopedSession.desyncTimeout);
 
 		// reset element state
 		element[0][DATA_HASACTIVEHOVER] = false;
@@ -123,17 +126,17 @@ function TooltipController(options) {
 
 		// fade out
 		tipElement.hide();
-    var coords = new CSSCoordinates();
+		var coords = new CSSCoordinates();
 
-    // reset session and tooltip element
-    session.isClosing = false;
-    tipElement.removeClass();
+		// reset session and tooltip element
+		scopedSession.isClosing = false;
+		tipElement.removeClass();
 
-    // support mouse-follow and fixed position tips at the same time by
-    // moving the tooltip to the last cursor location after it is hidden
-    coords.set('top', session.currentY + options.offset);
-    coords.set('left', session.currentX + options.offset);
-    tipElement.css(coords);
+		// support mouse-follow and fixed position tips at the same time by
+		// moving the tooltip to the last cursor location after it is hidden
+		coords.set('top', session.currentY + options.offset);
+		coords.set('left', session.currentX + options.offset);
+		tipElement.css(coords);
 	}
 
 	/**
@@ -143,8 +146,7 @@ function TooltipController(options) {
 	 * @param {jQuery} element The element that the tooltip should target.
 	 */
 	function positionTipOnElement(element) {
-		var priorityList,
-			finalPlacement;
+		var priorityList, finalPlacement;
 
 		if (options.smartPlacement) {
 			priorityList = $.fn.powerTip.smartPlacementLists[options.placement];
@@ -152,7 +154,7 @@ function TooltipController(options) {
 			// iterate over the priority list and use the first placement option
 			// that does not collide with the view port. if they all collide
 			// then the last placement in the list will be used.
-			$.each(priorityList, function(_, pos) {
+			$.each(priorityList, function (_, pos) {
 				// place tooltip and find collisions
 				var collisions = getViewportCollisions(
 					placeTooltip(element, pos),
@@ -219,7 +221,8 @@ function TooltipController(options) {
 			// sanity check: limit to 5 iterations, and...
 			++iterationCount <= 5 &&
 			// try again if the dimensions changed after placement
-			(tipWidth !== tipElement.outerWidth() || tipHeight !== tipElement.outerHeight())
+			(tipWidth !== tipElement.outerWidth() ||
+				tipHeight !== tipElement.outerHeight())
 		);
 
 		return coords;
@@ -237,9 +240,16 @@ function TooltipController(options) {
 		// result in a desynced tooltip because the tooltip was never asked to
 		// close. So we should periodically check for a desync situation and
 		// close the tip if such a situation arises.
-		if (session.isTipOpen && !session.isClosing && !session.delayInProgress) {
+		if (
+			scopedSession.isTipOpen &&
+			!scopedSession.isClosing &&
+			!scopedSession.delayInProgress
+		) {
 			// user moused onto another tip or active hover is disabled
-			if (session.activeHover[0][DATA_HASACTIVEHOVER] === false || session.activeHover.is(':disabled')) {
+			if (
+				scopedSession.activeHover[0][DATA_HASACTIVEHOVER] === false ||
+				scopedSession.activeHover.is(':disabled')
+			) {
 				isDesynced = true;
 			} else {
 				// hanging tip - have to test if mouse position is not over the
@@ -249,16 +259,20 @@ function TooltipController(options) {
 				// not have focus.
 				// for tooltips opened via the api: we need to check if it has
 				// the forcedOpen flag.
-				if (!isMouseOver(session.activeHover) && !session.activeHover.is(':focus') && !session.activeHover[0][DATA_FORCEDOPEN]) {
-          if (!isMouseOver(tipElement)) {
-            isDesynced = true;
-          }
+				if (
+					!isMouseOver(scopedSession.activeHover) &&
+					!scopedSession.activeHover.is(':focus') &&
+					!scopedSession.activeHover[0][DATA_FORCEDOPEN]
+				) {
+					if (!isMouseOver(tipElement)) {
+						isDesynced = true;
+					}
 				}
 			}
 
 			if (isDesynced) {
 				// close the desynced tip
-				hideTip(session.activeHover);
+				hideTip(scopedSession.activeHover);
 			}
 		}
 	}
